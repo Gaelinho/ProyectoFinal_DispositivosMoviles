@@ -1,4 +1,4 @@
-package com.example.tarea04
+package com.example.proyectofinal
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,15 +10,12 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.ListView
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 
 class PendientesActivity : ComponentActivity() {
-
-    private val menuTask : ArrayList<Task> = ArrayList<Task>();
 
     private lateinit var mMenuSections: Array<String>
     private lateinit var mDrawerLayout: DrawerLayout
@@ -31,8 +28,7 @@ class PendientesActivity : ComponentActivity() {
             val position = result.data?.getIntExtra("position", -1) ?: -1
 
             if (position != -1) {
-                menuTask[position] = editedTask  // Update the task at the specified position
-                (findViewById<ListView>(R.id.list).adapter as TaskAdapter).notifyDataSetChanged()  // Notify the adapter
+                (findViewById<ListView>(R.id.list).adapter as TaskAdapter).notifyDataSetChanged()
             }
         }
     }
@@ -124,64 +120,10 @@ class PendientesActivity : ComponentActivity() {
     }
 
     fun crearMenu() {
-        menuTask.add(
-            Task(
-                "Tarea 04",
-                "Dispositivos Moviles",
-                "Intents",
-                "19/11/2024",
-                "23:59",
-                false
-            )
-        )
-        menuTask.add(
-            Task(
-                "Examen 03",
-                "Dispositivos Moviles",
-                "Bases de Datos",
-                "22/11/2024",
-                "07:00",
-                true
-            )
-        )
-        menuTask.add(
-            Task(
-                "Practica 07",
-                "Compiladores",
-                "Verificacion de tipos",
-                "22/11/2024",
-                "23:59",
-                false
-            )
-        )
-
-        var action : String? = intent.getStringExtra("action")
-
-        if (action == "edit") {
-            var position = intent.getIntExtra("position", -1)
-            Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show()
-            if (position != -1) {
-                menuTask.removeAt(position)
-                var nuevo : Task = Task(intent.getStringExtra("taskName").toString(),
-                    intent.getStringExtra("taskSubject").toString(),
-                    intent.getStringExtra("taskDescription").toString(),
-                    intent.getStringExtra("taskDate").toString(),
-                    intent.getStringExtra("taskTime").toString(),
-                    intent.getBooleanExtra("taskPriority", false))
-                menuTask.add(nuevo)
-            }
-        } else if (action == "add") {
-            var nuevo : Task = Task(intent.getStringExtra("taskName").toString(),
-                intent.getStringExtra("taskSubject").toString(),
-                intent.getStringExtra("taskDescription").toString(),
-                intent.getStringExtra("taskDate").toString(),
-                intent.getStringExtra("taskTime").toString(),
-                intent.getBooleanExtra("taskPriority", false))
-            menuTask.add(nuevo)
-        }
-
-
-        val adapter: TaskAdapter = TaskAdapter(this, R.layout.task_in_list, menuTask)
+        val taskBDD : TaskBDD = TaskBDD(this)
+        taskBDD.openForRead()
+        val adapter: TaskAdapter = TaskAdapter(this, R.layout.task_in_list, taskBDD.getAllTasks())
+        taskBDD.close()
         val listView: ListView = findViewById(R.id.list)
         listView.adapter = adapter
     }

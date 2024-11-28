@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tarea04"
+    namespace = "com.example.proyectofinal"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.tarea04"
+        applicationId = "com.example.proyectofinal"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

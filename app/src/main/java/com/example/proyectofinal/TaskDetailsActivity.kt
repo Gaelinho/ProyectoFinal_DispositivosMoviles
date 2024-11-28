@@ -1,6 +1,7 @@
-package com.example.tarea04
+package com.example.proyectofinal
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
@@ -18,19 +19,19 @@ class TaskDetailsActivity : ComponentActivity() {
         val description = findViewById<TextView>(R.id.description)
         val priority = findViewById<CheckBox>(R.id.checkBox)
 
-        val taskName = intent.getStringExtra("taskName")
-        val taskSubject = intent.getStringExtra("taskSubject")
-        val taskDate = intent.getStringExtra("taskDate")
-        val taskTime = intent.getStringExtra("taskTime")
-        val taskDescription = intent.getStringExtra("taskDescription")
-        val taskPriority = intent.getBooleanExtra("taskPriority", false)
+        val taskBDD : TaskBDD = TaskBDD(this)
+        taskBDD.openForRead()
+        val id : Int = intent.getIntExtra("id", -1)
+        val task : Task = taskBDD.getTask(id)
+        Log.d("TaskDetailsActivity", task.isPrioridad.toString())
+        taskBDD.close()
 
-        name.text = taskName
-        subject.text = taskSubject
-        date.text = taskDate
-        time.text = taskTime
-        description.text = taskDescription
-        priority.isChecked = taskPriority
+        name.setText(task.nombre)
+        subject.setText(task.materia)
+        date.setText(task.fecha)
+        time.setText(task.hora)
+        description.setText(task.descripcion)
+        priority.isChecked = task.isPrioridad
 
         val buttonBack = findViewById<Button>(R.id.buttonBack)
         buttonBack.setOnClickListener {

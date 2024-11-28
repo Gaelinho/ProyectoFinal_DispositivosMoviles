@@ -1,14 +1,16 @@
-package com.example.tarea04;
+package com.example.proyectofinal;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Task implements Parcelable {
+    private int id;
     private String nombre;
     private String materia;
     private String descripcion;
     private String fecha;
     private String hora;
     private boolean prioridad;
+    private boolean completed;
 
     public Task(String nombre, String materia, String descripcion, String fecha, String hora, boolean prioridad) {
         this.nombre = nombre;
@@ -17,6 +19,18 @@ public class Task implements Parcelable {
         this.fecha = fecha;
         this.hora = hora;
         this.prioridad = prioridad;
+        this.completed = false;
+    }
+
+    public Task(int id, String nombre, String materia, String descripcion, String fecha, String hora, boolean prioridad, boolean completed) {
+        this.id = id;
+        this.nombre = nombre;
+        this.materia = materia;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.prioridad = prioridad;
+        this.completed = completed;;
     }
 
     protected Task(Parcel in) {
@@ -55,6 +69,10 @@ public class Task implements Parcelable {
         }
     };
 
+    public int getId() {
+        return id;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -79,7 +97,8 @@ public class Task implements Parcelable {
         return prioridad;
     }
 
-    public void setPrioridad(boolean prioridad) {
-        this.prioridad = prioridad;
+    public boolean isCompleted() {
+        return completed;
     }
+
 }

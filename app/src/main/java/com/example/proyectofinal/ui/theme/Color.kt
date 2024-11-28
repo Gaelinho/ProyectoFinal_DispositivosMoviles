@@ -1,4 +1,4 @@
-package com.example.tarea04.ui.theme
+package com.example.proyectofinal.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

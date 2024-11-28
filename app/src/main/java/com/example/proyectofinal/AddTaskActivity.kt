@@ -1,7 +1,8 @@
-package com.example.tarea04
+package com.example.proyectofinal
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
@@ -9,22 +10,12 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import java.text.SimpleDateFormat
-import java.util.Locale
 
-class EditTaskActivity : ComponentActivity() {
+class AddTaskActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.edit_task_layout)
-
-        val taskName = intent.getStringExtra("taskName")
-        val taskSubject = intent.getStringExtra("taskSubject")
-        val taskDate = intent.getStringExtra("taskDate")
-        val taskTime = intent.getStringExtra("taskTime")
-        val taskDescription = intent.getStringExtra("taskDescription")
-        val taskPriority = intent.getBooleanExtra("taskPriority", false)
-        val position = intent.getIntExtra("position", -1)
+        setContentView(R.layout.add_task_layout)
 
         val name = findViewById<EditText>(R.id.task_name)
         val subject = findViewById<Spinner>(R.id.spinner_task_subject)
@@ -38,20 +29,11 @@ class EditTaskActivity : ComponentActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         subject.adapter = adapter
 
-        name.setText(taskName)
-        date.setText(taskDate)
-        time.setText(taskTime)
-        description.setText(taskDescription)
-        priority.isChecked = taskPriority
-
-        subject.setSelection(subjects.indexOf(taskSubject))
-
-        val buttonConfirm = findViewById<Button>(R.id.buttonConfirm)
-        buttonConfirm.setOnClickListener {
+        val buttonAdd = findViewById<Button>(R.id.buttonAdd)
+        buttonAdd.setOnClickListener {
             val dateString = date.text.toString()
             val timeString = time.text.toString()
 
-            // Regular expressions for strict format validation
             val dateRegex = """^\d{2}/\d{2}/\d{4}$""".toRegex()
             val timeRegex = """^\d{2}:\d{2}$""".toRegex()
 
@@ -62,17 +44,13 @@ class EditTaskActivity : ComponentActivity() {
                 Toast.makeText(this, "Formato de hora incorrecto (HH:mm)", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             } else {
-                val data = Intent(this, PendientesActivity::class.java)
-                data.putExtra("taskName", name.text.toString())
-                data.putExtra("taskSubject", subject.selectedItem.toString())
-                data.putExtra("taskDate", dateString)
-                data.putExtra("taskTime", timeString)
-                data.putExtra("taskDescription", description.text.toString())
-                data.putExtra("taskPriority", priority.isChecked)
-                data.putExtra("position", position)
-                data.putExtra("action", "edit")
+                val nuevoTask : Task = Task(name.text.toString(), subject.selectedItem.toString(), description.text.toString(), dateString, timeString, priority.isChecked)
+                val taskBDD : TaskBDD = TaskBDD(this)
+                taskBDD.openForWrite()
+                taskBDD.insertTask(nuevoTask)
+                taskBDD.close()
 
-                startActivity(data)
+                finish()
             }
         }
     }

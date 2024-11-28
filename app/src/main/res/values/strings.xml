@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tarea04</string>
+    <string name="app_name">ProyectoFinal</string>
 
     <!--Cadenas para layout add_task-->
     <string name="add_task_title">Nueva Tarea</string>

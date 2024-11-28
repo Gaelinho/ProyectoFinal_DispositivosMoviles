@@ -1,4 +1,4 @@
-package com.example.tarea04
+package com.example.proyectofinal
 
 import org.junit.Test
 

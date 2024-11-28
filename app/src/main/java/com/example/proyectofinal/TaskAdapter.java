@@ -1,4 +1,4 @@
-package com.example.tarea04;
+package com.example.proyectofinal;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,16 +18,12 @@ public class TaskAdapter extends ArrayAdapter<Task> {
     private Context context;
     private ArrayList<Task> tasks;
     private int viewResourceId;
-    private Resources resources;
-    private boolean[] uncompletedTasks;
 
     public TaskAdapter(Context context, int viewResourceId, ArrayList<Task> tasks) {
         super(context, viewResourceId, tasks);
         this.context = context;
         this.tasks = tasks;
         this.viewResourceId = viewResourceId;
-        this.resources = context.getResources();
-        this.uncompletedTasks = new boolean[tasks.size()];
     }
 
     @Override
@@ -57,24 +53,15 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
         buttonSeeDetails.setOnClickListener(v -> {
             Intent intent = new Intent(context, TaskDetailsActivity.class);
-            intent.putExtra("taskName", task.getNombre());
-            intent.putExtra("taskSubject", task.getMateria());
-            intent.putExtra("taskDate", task.getFecha());
-            intent.putExtra("taskTime", task.getHora());
-            intent.putExtra("taskDescription", task.getDescripcion());
-            intent.putExtra("taskPriority", task.isPrioridad());
+            intent.putExtra("id", task.getId());
+
             context.startActivity(intent);
         });
 
         buttonEdit.setOnClickListener(v -> {
             Intent intent = new Intent(context, EditTaskActivity.class);
-            intent.putExtra("taskName", task.getNombre());
-            intent.putExtra("taskSubject", task.getMateria());
-            intent.putExtra("taskDate", task.getFecha());
-            intent.putExtra("taskTime", task.getHora());
-            intent.putExtra("taskDescription", task.getDescripcion());
-            intent.putExtra("taskPriority", task.isPrioridad());
-            intent.putExtra("position", position);
+            intent.putExtra("id", task.getId());
+
             context.startActivity(intent);
         });
 

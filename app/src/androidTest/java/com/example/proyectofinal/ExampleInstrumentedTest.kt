@@ -1,4 +1,4 @@
-package com.example.tarea04
+package com.example.proyectofinal
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -21,6 +21,9 @@ class PendientesActivity : ComponentActivity() {
     private lateinit var mDrawerLayout: DrawerLayout
     private lateinit var mDrawerList: ListView
     private lateinit var mDrawerToggle: ActionBarDrawerToggle
+    private var ordenFecha = false
+    private var ordenMateria = false
+    private var ordenPrioridad = false
 
     private val editTaskLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
@@ -89,7 +92,16 @@ class PendientesActivity : ComponentActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.actionbar_menu, menu)
+        menu?.findItem(R.id.ord_fecha)?.isChecked = ordenFecha
+        menu?.findItem(R.id.ord_materia)?.isChecked = ordenMateria
         return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.findItem(R.id.ord_fecha)?.isChecked = ordenFecha
+        menu?.findItem(R.id.ord_materia)?.isChecked = ordenMateria
+        menu?.findItem(R.id.prior_menu)?.isChecked = ordenPrioridad
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -100,14 +112,30 @@ class PendientesActivity : ComponentActivity() {
         when (id) {
             R.id.ord_fecha -> {
                 Log.d("PendientesActivity", "Ordenar por Fecha")
+                if (!ordenFecha){
+                    ordenFecha = true
+                    ordenMateria = false
+                } else {
+                    ordenFecha = false
+                }
+                crearMenu()
                 return true
             }
             R.id.ord_materia -> {
                 Log.d("PendientesActivity", "Ordenar por Materia")
+                if (!ordenMateria){
+                    ordenMateria = true
+                    ordenFecha = false
+                } else {
+                    ordenMateria = false
+                }
+                crearMenu()
                 return true
             }
             R.id.prior_menu -> {
                 Log.d("PendientesActivity", "Mostrar Prioritarios")
+                ordenPrioridad = !ordenPrioridad
+                crearMenu()
                 return true
             }
         }
@@ -122,9 +150,24 @@ class PendientesActivity : ComponentActivity() {
     fun crearMenu() {
         val taskBDD : TaskBDD = TaskBDD(this)
         taskBDD.openForRead()
-        val adapter: TaskAdapter = TaskAdapter(this, R.layout.task_in_list, taskBDD.getAllTasks())
+        var tasks : ArrayList<Task> = taskBDD.getAllTasks()
         taskBDD.close()
-        val listView: ListView = findViewById(R.id.list)
-        listView.adapter = adapter
+        if (ordenPrioridad){
+            tasks = ArrayList(tasks.filter { it.isPrioridad })
+        }
+
+        if (ordenFecha){
+            val adapter: TaskAdapter = TaskAdapter(this, R.layout.task_in_list, ArrayList(tasks.sortedBy { it.fecha }))
+            val listView: ListView = findViewById(R.id.list)
+            listView.adapter = adapter
+        } else if (ordenMateria){
+            val adapter: TaskAdapter = TaskAdapter(this, R.layout.task_in_list, ArrayList(tasks.sortedBy { it.materia }))
+            val listView: ListView = findViewById(R.id.list)
+            listView.adapter = adapter
+        } else {
+            val adapter: TaskAdapter = TaskAdapter(this, R.layout.task_in_list, tasks)
+            val listView: ListView = findViewById(R.id.list)
+            listView.adapter = adapter
+        }
     }
 }

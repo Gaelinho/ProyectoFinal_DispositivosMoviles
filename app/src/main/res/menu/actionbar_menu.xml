@@ -5,11 +5,14 @@
 
     <item
         android:id="@+id/ord_fecha"
-        android:title="@string/ord_fecha" />
+        android:title="@string/ord_fecha"
+        android:checkable="true" />
     <item
         android:id="@+id/ord_materia"
-        android:title="@string/ord_materia" />
+        android:title="@string/ord_materia"
+        android:checkable="true" />
     <item
         android:id="@+id/prior_menu"
-        android:title="@string/prior_menu" />
+        android:title="@string/prior_menu"
+        android:checkable="true" />
 </menu>

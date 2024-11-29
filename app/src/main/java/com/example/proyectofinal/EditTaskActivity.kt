@@ -1,7 +1,7 @@
 package com.example.proyectofinal
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
@@ -15,6 +15,9 @@ class EditTaskActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.edit_task_layout)
+
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.setHomeButtonEnabled(true)
 
         val taskBDD : TaskBDD = TaskBDD(this)
         taskBDD.openForRead()
@@ -66,5 +69,13 @@ class EditTaskActivity : ComponentActivity() {
                 finish()
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

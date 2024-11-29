@@ -115,4 +115,38 @@ public class TaskBDD {
             return tasks;
         }
     }
+
+    public ArrayList<Task> getCompletedTasks() {
+        Cursor c = bdd.query(TABLA_TASKS, new String[]{COL_ID, COL_NOMBRE, COL_MATERIA, COL_DESCRIPCION, COL_FECHA, COL_HORA, COL_PRIORIDAD, COL_COMPLETED},
+                COL_COMPLETED + " = 1", null, null, null, null);
+        if(c.getCount() == 0) {
+            c.close();
+            return new ArrayList<Task>();
+        } else {
+            ArrayList<Task> tasks = new ArrayList<>();
+            while(c.moveToNext()) {
+                Task task = new Task(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NOMBRE), c.getString(NUM_COL_MATERIA), c.getString(NUM_COL_DESCRIPCION), c.getString(NUM_COL_FECHA), c.getString(NUM_COL_HORA), c.getInt(NUM_COL_PRIORIDAD) == 1, c.getInt(NUM_COL_COMPLETED) == 1);
+                tasks.add(task);
+            }
+            c.close();
+            return tasks;
+        }
+    }
+
+    public ArrayList<Task> getIncompletedTasks() {
+        Cursor c = bdd.query(TABLA_TASKS, new String[]{COL_ID, COL_NOMBRE, COL_MATERIA, COL_DESCRIPCION, COL_FECHA, COL_HORA, COL_PRIORIDAD, COL_COMPLETED},
+                COL_COMPLETED + " = 0" , null, null, null, null);
+        if(c.getCount() == 0) {
+            c.close();
+            return new ArrayList<Task>();
+        } else {
+            ArrayList<Task> tasks = new ArrayList<>();
+            while(c.moveToNext()) {
+                Task task = new Task(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NOMBRE), c.getString(NUM_COL_MATERIA), c.getString(NUM_COL_DESCRIPCION), c.getString(NUM_COL_FECHA), c.getString(NUM_COL_HORA), c.getInt(NUM_COL_PRIORIDAD) == 1, c.getInt(NUM_COL_COMPLETED) == 1);
+                tasks.add(task);
+            }
+            c.close();
+            return tasks;
+        }
+    }
 }

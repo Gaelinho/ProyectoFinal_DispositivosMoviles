@@ -81,11 +81,12 @@ class PendientesActivity : ComponentActivity() {
             if (parent.adapter.getItem(position) == "Agregar Tarea"){
                 val intent = Intent(parent.context, AddTaskActivity::class.java)
                 parent.context.startActivity(intent)
-            } else {
-                Log.d(
-                    "PendientesActivity",
-                    (parent.adapter.getItem(position) as String)
-                )
+            } else if ( parent.adapter.getItem(position) == "Eliminar Tarea") {
+                Log.d("PendientesActivity", "Eliminar Tarea")
+            }
+            else if (parent.adapter.getItem(position) == "Mostrar Completados") {
+                val intent = Intent(parent.context, CompletadosActivity::class.java)
+                parent.context.startActivity(intent)
             }
         }
     }
@@ -150,7 +151,7 @@ class PendientesActivity : ComponentActivity() {
     fun crearMenu() {
         val taskBDD : TaskBDD = TaskBDD(this)
         taskBDD.openForRead()
-        var tasks : ArrayList<Task> = taskBDD.getAllTasks()
+        var tasks : ArrayList<Task> = taskBDD.getIncompletedTasks()
         taskBDD.close()
         if (ordenPrioridad){
             tasks = ArrayList(tasks.filter { it.isPrioridad })

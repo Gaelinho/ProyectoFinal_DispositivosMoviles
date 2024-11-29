@@ -95,15 +95,6 @@
             android:text="@string/high_priority"
             android:clickable="false" />
 
-        <Button
-            android:id="@+id/buttonBack"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="25dp"
-            android:backgroundTint="#FB54BA"
-            android:text="@string/get_back"
-            android:textStyle="bold" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

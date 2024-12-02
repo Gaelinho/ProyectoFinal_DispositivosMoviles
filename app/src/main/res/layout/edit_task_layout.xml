@@ -116,15 +116,39 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/buttonConfirm"
+        <LinearLayout
+            android:id="@+id/buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:backgroundTint="#FB54BA"
-            android:text="@string/confirm"
-            android:textStyle="bold"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:backgroundTint="#FB54BA"
+                android:layout_weight="1"
+                android:text="@string/confirm"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"/>
+
+            <Button
+                android:id="@+id/buttonDelete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_weight="2"
+                android:backgroundTint="#FB54BA"
+                android:text="@string/delete"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

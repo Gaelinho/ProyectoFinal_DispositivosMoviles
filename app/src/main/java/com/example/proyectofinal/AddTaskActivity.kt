@@ -61,6 +61,7 @@ class AddTaskActivity : ComponentActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
+            parent.recreate()
             finish()
             return true
         }

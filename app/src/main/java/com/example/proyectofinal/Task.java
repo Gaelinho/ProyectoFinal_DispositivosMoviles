@@ -30,7 +30,7 @@ public class Task implements Parcelable {
         this.fecha = fecha;
         this.hora = hora;
         this.prioridad = prioridad;
-        this.completed = completed;;
+        this.completed = completed;
     }
 
     protected Task(Parcel in) {

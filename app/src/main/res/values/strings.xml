@@ -24,6 +24,7 @@
     <string name="DrawerOpened">NavigationDrawerOpened</string>
     <string name="DrawerClosed">NavigationDrawerClosed</string>
     <string name="edit_task">Editar</string>
+    <string name="delete">Eliminar</string>
     v
     <string-array name="menu_items">
         <item>Agregar Tarea</item>

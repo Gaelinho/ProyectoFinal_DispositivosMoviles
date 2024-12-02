@@ -148,6 +148,12 @@ class PendientesActivity : ComponentActivity() {
         mDrawerToggle.syncState()
     }
 
+    override fun onResume() {
+        super.onResume()
+        crearMenu()
+        mDrawerLayout.close()
+    }
+
     fun crearMenu() {
         val taskBDD : TaskBDD = TaskBDD(this)
         taskBDD.openForRead()

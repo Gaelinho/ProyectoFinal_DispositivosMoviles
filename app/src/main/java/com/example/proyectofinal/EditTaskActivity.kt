@@ -46,6 +46,8 @@ class EditTaskActivity : ComponentActivity() {
         subject.setSelection(subjects.indexOf(task.materia))
 
         val buttonConfirm = findViewById<Button>(R.id.buttonConfirm)
+        val buttonDelete = findViewById<Button>(R.id.buttonDelete)
+
         buttonConfirm.setOnClickListener {
             val dateString = date.text.toString()
             val timeString = time.text.toString()
@@ -68,6 +70,15 @@ class EditTaskActivity : ComponentActivity() {
 
                 finish()
             }
+        }
+
+        buttonDelete.setOnClickListener {
+            var taskBDD : TaskBDD = TaskBDD(this)
+            taskBDD.openForWrite()
+            taskBDD.deleteTask(id)
+            taskBDD.close()
+
+            finish()
         }
     }
 

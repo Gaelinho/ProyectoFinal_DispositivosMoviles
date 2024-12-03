@@ -165,7 +165,6 @@ class PendientesActivity : ComponentActivity() {
     fun crearMenu() {
         val taskBDD : TaskBDD = TaskBDD(this)
         taskBDD.openForRead()
-        taskBDD.deletePastTasks()
         var tasks : ArrayList<Task> = taskBDD.getIncompletedTasks()
         taskBDD.close()
         if (ordenPrioridad){

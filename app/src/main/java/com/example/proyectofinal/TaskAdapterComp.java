@@ -42,8 +42,8 @@
 
             name.setText(task.getNombre());
             materia.setText(task.getMateria());
-            fecha.setText(task.getFecha());
-            hora.setText(task.getHora());
+            fecha.setText(task.getFormattedFecha());
+            hora.setText(task.getFormattedHora());
             checkBox.setChecked(task.isPrioridad());
 
             return convertView;

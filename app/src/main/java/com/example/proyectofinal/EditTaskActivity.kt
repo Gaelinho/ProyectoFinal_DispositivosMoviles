@@ -5,10 +5,14 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import java.time.LocalDate
+import java.time.LocalTime
 
 class EditTaskActivity : ComponentActivity() {
 
@@ -27,8 +31,8 @@ class EditTaskActivity : ComponentActivity() {
 
         val name = findViewById<EditText>(R.id.task_name)
         val subject = findViewById<Spinner>(R.id.spinner_task_subject)
-        val date = findViewById<EditText>(R.id.edit_due_date)
-        val time = findViewById<EditText>(R.id.time)
+        val date = findViewById<DatePicker>(R.id.edit_due_date)
+        val time = findViewById<TimePicker>(R.id.time)
         val description = findViewById<EditText>(R.id.task_desc)
         val priority = findViewById<CheckBox>(R.id.checkBox)
 
@@ -38,8 +42,9 @@ class EditTaskActivity : ComponentActivity() {
         subject.adapter = adapter
 
         name.setText(task.nombre)
-        date.setText(task.fecha)
-        time.setText(task.hora)
+        date.updateDate(task.fecha.year, task.fecha.monthValue - 1, task.fecha.dayOfMonth)
+        time.hour = task.hora.hour
+        time.minute = task.hora.minute
         description.setText(task.descripcion)
         priority.isChecked = task.isPrioridad
 
@@ -49,27 +54,16 @@ class EditTaskActivity : ComponentActivity() {
         val buttonDelete = findViewById<Button>(R.id.buttonDelete)
 
         buttonConfirm.setOnClickListener {
-            val dateString = date.text.toString()
-            val timeString = time.text.toString()
+            val dateString = LocalDate.of(date.year, date.month + 1, date.dayOfMonth)
+            val timeString = LocalTime.of(time.hour, time.minute)
 
-            val dateRegex = """^\d{2}/\d{2}/\d{4}$""".toRegex()
-            val timeRegex = """^\d{2}:\d{2}$""".toRegex()
+            val nuevoTask : Task = Task(name.text.toString(), subject.selectedItem.toString(), description.text.toString(), dateString, timeString, priority.isChecked)
+            val taskBDD : TaskBDD = TaskBDD(this)
+            taskBDD.openForWrite()
+            taskBDD.updateTask(id, nuevoTask)
+            taskBDD.close()
 
-            if (!dateRegex.matches(dateString)) {
-                Toast.makeText(this, "Formato de fecha incorrecto (dd/MM/yyyy)", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            } else if (!timeRegex.matches(timeString)) {
-                Toast.makeText(this, "Formato de hora incorrecto (HH:mm)", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            } else {
-                val editedTask : Task = Task(name.text.toString(), subject.selectedItem.toString(), description.text.toString(), dateString, timeString, priority.isChecked)
-                var taskBDD : TaskBDD = TaskBDD(this)
-                taskBDD.openForWrite()
-                taskBDD.updateTask(id, editedTask)
-                taskBDD.close()
-
-                finish()
-            }
+            finish()
         }
 
         buttonDelete.setOnClickListener {

@@ -31,8 +31,8 @@ class TaskDetailsActivity : ComponentActivity() {
 
         name.setText(task.nombre)
         subject.setText(task.materia)
-        date.setText(task.fecha)
-        time.setText(task.hora)
+        date.setText(task.formattedFecha)
+        time.setText(task.formattedHora)
         description.setText(task.descripcion)
         priority.isChecked = task.isPrioridad
 

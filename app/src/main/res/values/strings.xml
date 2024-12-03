@@ -28,7 +28,7 @@
     v
     <string-array name="menu_items">
         <item>Agregar Tarea</item>
-        <item>Eliminar Tarea</item>
         <item>Mostrar Completados</item>
+        <item>Borrar Tareas Pasadas</item>
     </string-array>
 </resources>

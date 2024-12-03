@@ -73,7 +73,7 @@ class PendientesActivity : ComponentActivity() {
         actionBar!!.setHomeButtonEnabled(true)
     }
 
-    private class DrawerItemClickListener : OnItemClickListener {
+    private inner class DrawerItemClickListener : OnItemClickListener {
         override fun onItemClick(
             parent: AdapterView<*>,
             view: View, position: Int, id: Long
@@ -81,14 +81,22 @@ class PendientesActivity : ComponentActivity() {
             if (parent.adapter.getItem(position) == "Agregar Tarea"){
                 val intent = Intent(parent.context, AddTaskActivity::class.java)
                 parent.context.startActivity(intent)
-            } else if ( parent.adapter.getItem(position) == "Eliminar Tarea") {
-                Log.d("PendientesActivity", "Eliminar Tarea")
+            } else if ( parent.adapter.getItem(position) == "Borrar Tareas Pasadas") {
+                deletePastTasks()
+                recreate()
             }
             else if (parent.adapter.getItem(position) == "Mostrar Completados") {
                 val intent = Intent(parent.context, CompletadosActivity::class.java)
                 parent.context.startActivity(intent)
             }
         }
+    }
+
+    fun deletePastTasks(){
+        val taskBDD : TaskBDD = TaskBDD(this)
+        taskBDD.openForWrite()
+        taskBDD.deletePastTasks()
+        taskBDD.close()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -157,6 +165,7 @@ class PendientesActivity : ComponentActivity() {
     fun crearMenu() {
         val taskBDD : TaskBDD = TaskBDD(this)
         taskBDD.openForRead()
+        taskBDD.deletePastTasks()
         var tasks : ArrayList<Task> = taskBDD.getIncompletedTasks()
         taskBDD.close()
         if (ordenPrioridad){

@@ -1,5 +1,6 @@
     package com.example.proyectofinal;
 
+    import android.app.Activity;
     import android.content.Context;
     import android.content.Intent;
     import android.view.LayoutInflater;
@@ -46,8 +47,8 @@
 
             name.setText(task.getNombre());
             materia.setText(task.getMateria());
-            fecha.setText(task.getFecha());
-            hora.setText(task.getHora());
+            fecha.setText(task.getFormattedFecha());
+            hora.setText(task.getFormattedHora());
             checkBox.setChecked(task.isPrioridad());
 
             buttonSeeDetails.setOnClickListener(v -> {
@@ -70,6 +71,14 @@
                 taskBDD.openForWrite();
                 taskBDD.updateTask(task.getId(), updatedTask);
                 taskBDD.close();
+
+                if (context instanceof Activity) {
+                    Activity activity = (Activity) context;
+                    Intent intent = new Intent(activity, PendientesActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intent);
+                    activity.finish();
+                }
             });
 
             return convertView;

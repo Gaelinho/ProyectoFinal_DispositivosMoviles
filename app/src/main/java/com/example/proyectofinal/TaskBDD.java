@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class TaskBDD {
@@ -58,8 +60,8 @@ public class TaskBDD {
         values.put(COL_NOMBRE, task.getNombre());
         values.put(COL_MATERIA, task.getMateria());
         values.put(COL_DESCRIPCION, task.getDescripcion());
-        values.put(COL_FECHA, task.getFecha());
-        values.put(COL_HORA, task.getHora());
+        values.put(COL_FECHA, task.getFecha().toString());
+        values.put(COL_HORA, task.getHora().toString());
         values.put(COL_PRIORIDAD, task.isPrioridad() ? 1 : 0);
         values.put(COL_COMPLETED, 0);
         return bdd.insert(TABLA_TASKS, null, values);
@@ -70,8 +72,8 @@ public class TaskBDD {
         values.put(COL_NOMBRE, task.getNombre());
         values.put(COL_MATERIA, task.getMateria());
         values.put(COL_DESCRIPCION, task.getDescripcion());
-        values.put(COL_FECHA, task.getFecha());
-        values.put(COL_HORA, task.getHora());
+        values.put(COL_FECHA, task.getFecha().toString());
+        values.put(COL_HORA, task.getHora().toString());
         values.put(COL_PRIORIDAD, task.isPrioridad() ? 1 : 0);
         values.put(COL_COMPLETED, task.isCompleted() ? 1 : 0);
         return bdd.update(TABLA_TASKS, values, COL_ID + " = " + id, null);
@@ -93,7 +95,7 @@ public class TaskBDD {
             c.close();
             return null;
         } else {
-            Task task = new Task(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NOMBRE), c.getString(NUM_COL_MATERIA), c.getString(NUM_COL_DESCRIPCION), c.getString(NUM_COL_FECHA), c.getString(NUM_COL_HORA), c.getInt(NUM_COL_PRIORIDAD) == 1, c.getInt(NUM_COL_COMPLETED) == 1);
+            Task task = new Task(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NOMBRE), c.getString(NUM_COL_MATERIA), c.getString(NUM_COL_DESCRIPCION), LocalDate.parse(c.getString(NUM_COL_FECHA)), LocalTime.parse(c.getString(NUM_COL_HORA)), c.getInt(NUM_COL_PRIORIDAD) == 1, c.getInt(NUM_COL_COMPLETED) == 1);
             c.close();
             return task;
         }
@@ -108,7 +110,7 @@ public class TaskBDD {
         } else {
             ArrayList<Task> tasks = new ArrayList<>();
             while(c.moveToNext()) {
-                Task task = new Task(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NOMBRE), c.getString(NUM_COL_MATERIA), c.getString(NUM_COL_DESCRIPCION), c.getString(NUM_COL_FECHA), c.getString(NUM_COL_HORA), c.getInt(NUM_COL_PRIORIDAD) == 1, c.getInt(NUM_COL_COMPLETED) == 1);
+                Task task = new Task(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NOMBRE), c.getString(NUM_COL_MATERIA), c.getString(NUM_COL_DESCRIPCION), LocalDate.parse(c.getString(NUM_COL_FECHA)), LocalTime.parse(c.getString(NUM_COL_HORA)), c.getInt(NUM_COL_PRIORIDAD) == 1, c.getInt(NUM_COL_COMPLETED) == 1);
                 tasks.add(task);
             }
             c.close();
@@ -125,7 +127,7 @@ public class TaskBDD {
         } else {
             ArrayList<Task> tasks = new ArrayList<>();
             while(c.moveToNext()) {
-                Task task = new Task(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NOMBRE), c.getString(NUM_COL_MATERIA), c.getString(NUM_COL_DESCRIPCION), c.getString(NUM_COL_FECHA), c.getString(NUM_COL_HORA), c.getInt(NUM_COL_PRIORIDAD) == 1, c.getInt(NUM_COL_COMPLETED) == 1);
+                Task task = new Task(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NOMBRE), c.getString(NUM_COL_MATERIA), c.getString(NUM_COL_DESCRIPCION), LocalDate.parse(c.getString(NUM_COL_FECHA)), LocalTime.parse(c.getString(NUM_COL_HORA)), c.getInt(NUM_COL_PRIORIDAD) == 1, c.getInt(NUM_COL_COMPLETED) == 1);
                 tasks.add(task);
             }
             c.close();
@@ -142,11 +144,15 @@ public class TaskBDD {
         } else {
             ArrayList<Task> tasks = new ArrayList<>();
             while(c.moveToNext()) {
-                Task task = new Task(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NOMBRE), c.getString(NUM_COL_MATERIA), c.getString(NUM_COL_DESCRIPCION), c.getString(NUM_COL_FECHA), c.getString(NUM_COL_HORA), c.getInt(NUM_COL_PRIORIDAD) == 1, c.getInt(NUM_COL_COMPLETED) == 1);
+                Task task = new Task(c.getInt(NUM_COL_ID), c.getString(NUM_COL_NOMBRE), c.getString(NUM_COL_MATERIA), c.getString(NUM_COL_DESCRIPCION), LocalDate.parse(c.getString(NUM_COL_FECHA)), LocalTime.parse(c.getString(NUM_COL_HORA)), c.getInt(NUM_COL_PRIORIDAD) == 1, c.getInt(NUM_COL_COMPLETED) == 1);
                 tasks.add(task);
             }
             c.close();
             return tasks;
         }
+    }
+
+    public void deletePastTasks() {
+        bdd.delete(TABLA_TASKS, COL_FECHA + " < date('now')", null);
     }
 }
